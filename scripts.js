@@ -77,7 +77,7 @@ function calcAndDisplay() {
 // Takes current value within the display and pushes it into the expression along with the active operator
 function pushExpression() {
   const display = getDisplay;
-  const activeButton = document.getElementByClassName("active")[0];
+  const activeButton = document.getElementsByClassName("active")[0];
 
   let activeOperator = activeButton.innerHTML.toLowerCase();
   activeOperator === "÷"
