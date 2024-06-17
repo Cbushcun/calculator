@@ -51,11 +51,13 @@ document.addEventListener("DOMContentLoaded", function () {
 function togglePercent() {
   const percentBtn = document.getElementById("percent");
   const displayedValue = getDisplay().value;
+  const expressionArr = expression.split(/[/*\-+]/).filter(Boolean);
+  const percentVal =
+    expressionArr[expressionArr.length - 1] * (displayedValue / 100);
+  const diaplay = getDisplay();
+  diaplay.value = percentVal;
   percentBtn.classList.toggle("outline");
   isPercent ? (isPercent = false) : (isPercent = true);
-  if (isPercent & !isNaN(displayedValue)) {
-    console.log(expression.split(/[/*\-+]/).filter(Boolean));
-  }
 }
 
 // Calculates the result from the expression and updates the display
