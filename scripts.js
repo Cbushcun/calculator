@@ -1,11 +1,10 @@
-// TODO:
-// Percent Calculations
-// AC/C toggle
-// limit number lenght on calculation display or reformat values to smaller, readable expressions
-// clear display after calculating result & new input press
-// equals does not double, instead repeats last arithmatic
-// Percent should calculate based off value of entire expression.
-// Calc and display should calculate the CURRENT expression.
+/** Restart
+ * var activeExpression = ""; use regex to allow building expression, use ÷ instead of / and x instead of *
+ * buildExpression function to use buttons to build string
+ * update screen with string on button press
+ * Percent calculation should multiply the decimal form by the result to percent e.g. 5+5% is 5+(5*0.05) whereas 5*5% is just 5*0.05
+ * Use regex to tokenize expression to allow following of pemdas, if % symbol is found, convert it to desired number based on last numerical token
+ */
 
 let expression = ""; // variable to allow expression building
 var activeOp = false; // variable for active operation checks
@@ -101,7 +100,7 @@ function clearOutlines() {
 	clearOperatorOutline();
 }
 
-// Clears outline from operator buttons
+// Clears outline from all operator buttons
 function clearOperatorOutline() {
 	activeOp = false;
 	const operatorBtns = document.querySelectorAll(".op");
