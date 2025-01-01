@@ -12,18 +12,17 @@ const displayRegex = /(\d+|\+|\-|\*|\/|\%)/g;
 document.addEventListener("DOMContentLoaded", function () {
 	const display = document.getElementById("display");
 	const buttons = document.querySelectorAll("button");
+
+	// Button listener, allows for button input
 	buttons.forEach((button) => {
 		button.addEventListener("click", (btn) => {
-			appendChar(btn.target.innerText);
-			console.log(btn.target.innerText);
+			if (btn.target.innerText === "AC") {
+				clearDisplay();
+			} else {
+				appendChar(btn.target.innerText);
+				console.log(btn.target.innerText);
+			}
 		});
-	});
-
-	display.addEventListener("input", (display) => {
-		const value = display.target.value;
-		if (!displayRegex.test(value)) {
-			display.target.value = value.slice(0, -1);
-		}
 	});
 
 	// Keyboard listener, allows numerical input via keystrokes
@@ -32,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (keystroke.key.match(displayRegex)) {
 			appendChar(keystroke.key);
 		} else if (keystroke.key === "Backspace") {
-			display.value = display.value.slice(0, -1);
+			clearLastInput();
 			activeExpression = display.value;
 		}
 	});
@@ -48,6 +47,16 @@ function tokenizeExpression(expression) {
 }
 
 function updateDisplay() {
-	display = document.getElementById("display");
+	const display = document.getElementById("display");
 	display.value = activeExpression;
+}
+
+function clearDisplay() {
+	const display = document.getElementById("display");
+	display.value = "";
+}
+
+function clearLastInput() {
+	const display = document.getElementById("display");
+	display.value = display.value.slice(0, -1);
 }
