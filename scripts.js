@@ -7,20 +7,47 @@
  */
 
 let activeExpression = "";
+const displayRegex = /(\d+|\+|\-|\*|\/|\%)/g;
 
 document.addEventListener("DOMContentLoaded", function () {
+	const display = document.getElementById("display");
 	const buttons = document.querySelectorAll("button");
 	buttons.forEach((button) => {
 		button.addEventListener("click", (btn) => {
+			appendChar(btn.target.innerText);
 			console.log(btn.target.innerText);
 		});
+	});
+
+	display.addEventListener("input", (display) => {
+		const value = display.target.value;
+		if (!displayRegex.test(value)) {
+			display.target.value = value.slice(0, -1);
+		}
+	});
+
+	// Keyboard listener, allows numerical input via keystrokes
+	window.addEventListener("keydown", function (keystroke) {
+		keystroke.preventDefault();
+		if (keystroke.key.match(displayRegex)) {
+			appendChar(keystroke.key);
+		} else if (keystroke.key === "Backspace") {
+			display.value = display.value.slice(0, -1);
+			activeExpression = display.value;
+		}
 	});
 });
 
 function appendChar(char) {
 	activeExpression += char;
+	updateDisplay();
 }
 
 function tokenizeExpression(expression) {
-	return expression.match(/(\d+|\+|\-|\*|\/|\%)/g);
+	return expression.match(displayRegex);
+}
+
+function updateDisplay() {
+	display = document.getElementById("display");
+	display.value = activeExpression;
 }
