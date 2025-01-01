@@ -27,12 +27,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Keyboard listener, allows numerical input via keystrokes
 	window.addEventListener("keydown", function (keystroke) {
+		let timer = 0;
+		let interval = null;
 		keystroke.preventDefault();
 		if (keystroke.key.match(displayRegex)) {
-			appendChar(keystroke.key);
+			let charInput = keystroke.key;
+			switch (charInput) {
+				case "/":
+					charInput = "÷";
+					break;
+				case "*":
+					charInput = "x";
+					break;
+				default:
+					break;
+			}
+			appendChar(charInput);
 		} else if (keystroke.key === "Backspace") {
-			clearLastInput();
-			activeExpression = display.value;
+			let isHeld = false;
+			let timeoutId = null;
+
+			timeoutId = setTimeout(() => {
+				isHeld = true;
+				clearDisplay();
+			}, 1000);
+
+			const onKeyUp = (event) => {
+				if (event.key === "Backspace") {
+					clearTimeout(timeoutId);
+
+					if (!isHeld) {
+						clearLastInput();
+						activeExpression = display.value;
+					}
+					this.document.removeEventListener("keyup", onKeyUp);
+				}
+			};
+			this.document.addEventListener("keyup", onKeyUp);
 		}
 	});
 });
@@ -52,8 +83,8 @@ function updateDisplay() {
 }
 
 function clearDisplay() {
-	const display = document.getElementById("display");
-	display.value = "";
+	activeExpression = "";
+	updateDisplay();
 }
 
 function clearLastInput() {
