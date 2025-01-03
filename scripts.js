@@ -7,7 +7,9 @@
  */
 
 let activeExpression = "";
-const displayRegex = /(\d+|\+|\-|\*|\/|\%)/g;
+const displayRegex = /[\d%÷x\-+]/;
+const symbolRegex = /[%÷x\-+]/;
+const tokenRegex = /\d+|[%÷x\-+]/g;
 
 document.addEventListener("DOMContentLoaded", function () {
 	const display = document.getElementById("display");
@@ -69,12 +71,24 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function appendChar(char) {
-	activeExpression += char;
+	if (activeExpression) {
+		let lastChar = getLastToken();
+		symbolRegex.test(lastChar) && symbolRegex.test(char)
+			? (activeExpression = activeExpression.slice(0, -1) + char)
+			: (activeExpression += char);
+	} else {
+		activeExpression += char;
+	}
 	updateDisplay();
 }
 
+function getLastToken() {
+	let tokenizedExpression = tokenizeExpression(activeExpression);
+	return tokenizedExpression[tokenizedExpression.length - 1];
+}
+
 function tokenizeExpression(expression) {
-	return expression.match(displayRegex);
+	return expression.match(tokenRegex);
 }
 
 function updateDisplay() {
