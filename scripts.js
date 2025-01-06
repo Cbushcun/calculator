@@ -17,12 +17,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Button listener, allows for button input
 	buttons.forEach((button) => {
-		button.addEventListener("click", (btn) => {
+		button.addEventListener("mousedown", (btn) => {
 			if (btn.target.id === "delete") {
-				clearDisplay();
+				let isHeld = false;
+				let timeoutId = null;
+
+				timeoutId = setTimeout(() => {
+					isHeld = true;
+					clearDisplay();
+					console.log("Button held");
+				}, 1000);
+
+				const onMouseUp = (event) => {
+					if (event.target.id === "delete") {
+						clearTimeout(timeoutId);
+
+						if (!isHeld) {
+							clearLastInput();
+							activeExpression = display.value;
+						}
+						document.removeEventListener("mouseup", onMouseUp);
+					}
+				};
+				document.addEventListener("mouseup", onMouseUp);
 			} else {
 				appendChar(btn.target.innerText);
-				console.log("Button pressed: ", btn.target);
 			}
 		});
 	});
@@ -62,10 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						clearLastInput();
 						activeExpression = display.value;
 					}
-					this.document.removeEventListener("keyup", onKeyUp);
+					document.removeEventListener("keyup", onKeyUp);
 				}
 			};
-			this.document.addEventListener("keyup", onKeyUp);
+			document.addEventListener("keyup", onKeyUp);
 		}
 	});
 });
