@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		});
 	});
-
 	// Keyboard listener, allows numerical input via keyboard
 	window.addEventListener("keydown", function (keystroke) {
 		let timer = 0;
@@ -117,6 +116,11 @@ function deleteLastChar() {
 	updateDisplay();
 }
 
+/**
+ * @param {number} nthToken
+ * @returns {string}
+ * @description Returns the nth token from the end of the active expression
+ */
 function getLastNthToken(nthToken) {
 	try {
 		let tokenizedExpression = tokenizeExpression(activeExpression);
@@ -126,6 +130,10 @@ function getLastNthToken(nthToken) {
 	}
 }
 
+/**
+ * @returns {string}
+ * @description Returns the last operator in the active expression
+ */
 function getLastOperator() {
 	let tokenizedExpression = tokenizeExpression(activeExpression);
 	let lastOperator = tokenizedExpression.filter((token) =>
@@ -134,11 +142,16 @@ function getLastOperator() {
 	return lastOperator[lastOperator.length - 1];
 }
 
+/**
+ * @returns {string}
+ * @description Returns the last number in the active expression in string form
+ */
 function getLastNumber() {
-	let tokenizedExpression = tokenizedExpression(activeExpression);
+	let tokenizedExpression = tokenizeExpression(activeExpression);
 	let lastNumber = tokenizedExpression.filter(
 		(token) => !symbolRegex.test(token)
 	);
+	return parseFloat(lastNumber[lastNumber.length - 1]);
 }
 
 /**
