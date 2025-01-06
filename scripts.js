@@ -96,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
  */
 function appendChar(char) {
 	if (activeExpression) {
-		let lastChar = getLastToken();
+		let lastChar = getLastNthToken(1);
 		symbolRegex.test(lastChar) && symbolRegex.test(char)
 			? (activeExpression = activeExpression.slice(0, -1) + char)
 			: (activeExpression += char);
@@ -106,6 +106,10 @@ function appendChar(char) {
 	updateDisplay();
 }
 
+/**
+ * @returns {string}
+ * @description Returns the last token in the active expression
+ */
 function deleteLastChar() {
 	activeExpression = activeExpression.slice(0, -1);
 	let isHeld = false;
@@ -113,13 +117,28 @@ function deleteLastChar() {
 	updateDisplay();
 }
 
-/**
- * @returns {string}
- * @description Returns the last token in the active expression
- */
-function getLastToken() {
+function getLastNthToken(nthToken) {
+	try {
+		let tokenizedExpression = tokenizeExpression(activeExpression);
+		return tokenizedExpression[tokenizedExpression.length - nthToken];
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+function getLastOperator() {
 	let tokenizedExpression = tokenizeExpression(activeExpression);
-	return tokenizedExpression[tokenizedExpression.length - 1];
+	let lastOperator = tokenizedExpression.filter((token) =>
+		symbolRegex.test(token)
+	);
+	return lastOperator[lastOperator.length - 1];
+}
+
+function getLastNumber() {
+	let tokenizedExpression = tokenizedExpression(activeExpression);
+	let lastNumber = tokenizedExpression.filter(
+		(token) => !symbolRegex.test(token)
+	);
 }
 
 /**
