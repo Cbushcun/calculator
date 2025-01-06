@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	const display = document.getElementById("display");
 	const buttons = document.querySelectorAll("button");
 
-	// Button listener, allows for button input
+	// Button listener, allows numerical input via button clicks
 	buttons.forEach((button) => {
 		button.addEventListener("click", (btn) => {
 			if (btn.target.innerText === "AC") {
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 
-	// Keyboard listener, allows numerical input via keystrokes
+	// Keyboard listener, allows numerical input via keyboard
 	window.addEventListener("keydown", function (keystroke) {
 		let timer = 0;
 		let interval = null;
@@ -70,6 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 });
 
+/**
+ * @param {string} char
+ * @returns {void}
+ * @description Appends a character to the active expression
+ */
 function appendChar(char) {
 	if (activeExpression) {
 		let lastChar = getLastToken();
@@ -82,25 +87,43 @@ function appendChar(char) {
 	updateDisplay();
 }
 
+/**
+ * @returns {string}
+ * @description Returns the last token in the active expression
+ */
 function getLastToken() {
 	let tokenizedExpression = tokenizeExpression(activeExpression);
 	return tokenizedExpression[tokenizedExpression.length - 1];
 }
 
+/**
+ * @param {string} expression
+ * @returns {string[]}
+ * @description Tokenizes the expression using the tokenRegex
+ */
 function tokenizeExpression(expression) {
 	return expression.match(tokenRegex);
 }
 
+/**
+ * @description Updates the display with the active expression
+ */
 function updateDisplay() {
 	const display = document.getElementById("display");
 	display.value = activeExpression;
 }
 
+/**
+ * @description Clears the display
+ */
 function clearDisplay() {
 	activeExpression = "";
 	updateDisplay();
 }
 
+/**
+ * @description Clears the last input
+ */
 function clearLastInput() {
 	const display = document.getElementById("display");
 	display.value = display.value.slice(0, -1);
