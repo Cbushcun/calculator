@@ -17,12 +17,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Button listener, allows numerical input via button clicks
 	buttons.forEach((button) => {
-		button.addEventListener("click", (btn) => {
-			if (btn.target.innerText === "AC") {
-				clearDisplay();
+		button.addEventListener("mousedown", (btn) => {
+			if (btn.target.id === "delete") {
+				let isHeld = false;
+				let timeoutId = null;
+
+				timeoutId = setTimeout(() => {
+					isHeld = true;
+					clearDisplay();
+					console.log("Button held");
+				}, 1000);
+
+				const onMouseUp = (event) => {
+					if (event.target.id === "delete") {
+						clearTimeout(timeoutId);
+
+						if (!isHeld) {
+							clearLastInput();
+							activeExpression = display.value;
+						}
+						document.removeEventListener("mouseup", onMouseUp);
+					}
+				};
+				document.addEventListener("mouseup", onMouseUp);
 			} else {
 				appendChar(btn.target.innerText);
-				console.log(btn.target.innerText);
 			}
 		});
 	});
@@ -62,10 +81,10 @@ document.addEventListener("DOMContentLoaded", function () {
 						clearLastInput();
 						activeExpression = display.value;
 					}
-					this.document.removeEventListener("keyup", onKeyUp);
+					document.removeEventListener("keyup", onKeyUp);
 				}
 			};
-			this.document.addEventListener("keyup", onKeyUp);
+			document.addEventListener("keyup", onKeyUp);
 		}
 	});
 });
@@ -87,10 +106,20 @@ function appendChar(char) {
 	updateDisplay();
 }
 
+<<<<<<< HEAD
 /**
  * @returns {string}
  * @description Returns the last token in the active expression
  */
+=======
+function deleteLastChar() {
+	activeExpression = activeExpression.slice(0, -1);
+	let isHeld = false;
+	let timeoutId = null;
+	updateDisplay();
+}
+
+>>>>>>> origin/js-update
 function getLastToken() {
 	let tokenizedExpression = tokenizeExpression(activeExpression);
 	return tokenizedExpression[tokenizedExpression.length - 1];
@@ -111,6 +140,7 @@ function tokenizeExpression(expression) {
 function updateDisplay() {
 	const display = document.getElementById("display");
 	display.value = activeExpression;
+	console.log("Display updated");
 }
 
 /**
@@ -118,6 +148,7 @@ function updateDisplay() {
  */
 function clearDisplay() {
 	activeExpression = "";
+	console.log("Display cleared");
 	updateDisplay();
 }
 
