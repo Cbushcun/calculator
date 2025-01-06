@@ -18,11 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	// Button listener, allows numerical input via button clicks
 	buttons.forEach((button) => {
 		button.addEventListener("click", (btn) => {
-			if (btn.target.innerText === "AC") {
+			if (btn.target.id === "delete") {
 				clearDisplay();
 			} else {
 				appendChar(btn.target.innerText);
-				console.log(btn.target.innerText);
+				console.log("Button pressed: ", btn.target);
 			}
 		});
 	});
@@ -87,6 +87,13 @@ function appendChar(char) {
 	updateDisplay();
 }
 
+function deleteLastChar() {
+	activeExpression = activeExpression.slice(0, -1);
+	let isHeld = false;
+	let timeoutId = null;
+	updateDisplay();
+}
+
 /**
  * @returns {string}
  * @description Returns the last token in the active expression
@@ -111,6 +118,7 @@ function tokenizeExpression(expression) {
 function updateDisplay() {
 	const display = document.getElementById("display");
 	display.value = activeExpression;
+	console.log("Display updated");
 }
 
 /**
@@ -118,6 +126,7 @@ function updateDisplay() {
  */
 function clearDisplay() {
 	activeExpression = "";
+	console.log("Display cleared");
 	updateDisplay();
 }
 

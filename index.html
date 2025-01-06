@@ -12,7 +12,8 @@
   <div class="bg-stone-950 w-[25rem] h-[40rem] m-auto grid grid-cols-4 grid-rows-6 gap-1 p-2 rounded text-3xl">
     <input type="text" id="display" class="col-span-4 text-right text-5xl">
     <header class="grid grid-cols-3 gap-1 col-span-3">
-      <button class="bg-stone-400 hover:bg-stone-300 transition duration-300">AC</button>
+      <button id="delete" class="bg-stone-400 hover:bg-stone-300 transition duration-300"><i
+          class="fa-solid fa-delete-left pointer-events-none"></i></button>
 
       <button class="bg-stone-400 hover:bg-stone-300 transition duration-300">+ /
         -</button>
@@ -27,30 +28,31 @@
       <button onclick="calcAndDisplay()" class="bg-amber-500 hover:bg-amber-400 transition duration-300">=</button>
     </aside>
     <main class="grid grid-cols-3 col-span-3 row-span-4 gap-1">
-      <button id="7" class="bg-stone-500 hover:bg-stone-400 transition duration-300">7</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">7</button>
 
-      <button id="8" class="bg-stone-500 hover:bg-stone-400 transition duration-300">8</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">8</button>
 
-      <button id="9" class="bg-stone-500 hover:bg-stone-400 transition duration-300">9</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">9</button>
 
-      <button id="4" class="bg-stone-500 hover:bg-stone-400 transition duration-300">4</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">4</button>
 
-      <button id="5" class="bg-stone-500 hover:bg-stone-400 transition duration-300">5</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">5</button>
 
-      <button id="6" class="bg-stone-500 hover:bg-stone-400 transition duration-300">6</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">6</button>
 
-      <button id="1" class="bg-stone-500 hover:bg-stone-400 transition duration-300">1</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">1</button>
 
-      <button id="2" class="bg-stone-500 hover:bg-stone-400 transition duration-300">2</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">2</button>
 
-      <button id="3" class="bg-stone-500 hover:bg-stone-400 transition duration-300">3</button>
+      <button class="bg-stone-500 hover:bg-stone-400 transition duration-300">3</button>
 
-      <button id="0" class="bg-stone-500 hover:bg-stone-400 col-span-2 transition duration-300">0</button>
+      <button class="bg-stone-500 hover:bg-stone-400 col-span-2 transition duration-300">0</button>
 
       <button onclick="" class="bg-stone-500 hover:bg-stone-400 transition duration-300">.</button>
     </main>
   </div>
   <script src="scripts.js"></script>
+  <script src="https://kit.fontawesome.com/8a81655c7b.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
