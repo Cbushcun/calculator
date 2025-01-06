@@ -109,6 +109,13 @@ function appendChar(char) {
 	updateDisplay();
 }
 
+function deleteLastChar() {
+	activeExpression = activeExpression.slice(0, -1);
+	let isHeld = false;
+	let timeoutId = null;
+	updateDisplay();
+}
+
 /**
  * @returns {string}
  * @description Returns the last token in the active expression
