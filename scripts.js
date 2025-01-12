@@ -57,33 +57,12 @@ function handleInput(input, isDelete = false, isHeldCheck = false) {
 			clearDisplay();
 			console.log("Delete held");
 		}, 1000);
-			handleInput(null, true, true);
-		}
-	});
-});
-
-/**
- * @param {string} input
- * @param {Boolean} isDelete
- * @param {Boolean} isHeldCheck
- * @returns {void}
- * @description Handles the input from the user
- */
-function handleInput(input, isDelete = false, isHeldCheck = false) {
-	if (isDelete) {
-		let isHeld = false;
-		let timeoutId = setTimeout(() => {
-			isHeld = true;
-			clearDisplay();
-			console.log("Delete held");
-		}, 1000);
 
 		const onRelease = () => {
 			clearTimeout(timeoutId);
 
 			if (!isHeld) {
 				clearLastInput();
-				activeExpression = display.value;
 			}
 
 			// Clean up event listener
@@ -163,6 +142,22 @@ function appendChar(char) {
 			deleteLastChar();
 		activeExpression += char;
 	}
+	console.log(
+		`Expression : ${activeExpression} tokenized : ${tokenizeExpression(
+			activeExpression
+		)}`
+	);
+	updateDisplay();
+}
+
+/**
+ * @returns {string}
+ * @description Returns the last token in the active expression
+ */
+function deleteLastChar() {
+	activeExpression = activeExpression.slice(0, -1);
+	let isHeld = false;
+	let timeoutId = null;
 	updateDisplay();
 }
 
