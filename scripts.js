@@ -42,6 +42,57 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 });
 
+// Helper function to handle input actions
+function handleInput(input, isDelete = false, isHeldCheck = false) {
+	if (isDelete) {
+		let isHeld = false;
+		let timeoutId = setTimeout(() => {
+			isHeld = true;
+			clearDisplay();
+			console.log("Delete held");
+		}, 1000);
+			handleInput(null, true, true);
+		}
+	});
+});
+
+/**
+ * @param {string} input
+ * @param {Boolean} isDelete
+ * @param {Boolean} isHeldCheck
+ * @returns {void}
+ * @description Handles the input from the user
+ */
+function handleInput(input, isDelete = false, isHeldCheck = false) {
+	if (isDelete) {
+		let isHeld = false;
+		let timeoutId = setTimeout(() => {
+			isHeld = true;
+			clearDisplay();
+			console.log("Delete held");
+		}, 1000);
+
+		const onRelease = () => {
+			clearTimeout(timeoutId);
+
+			if (!isHeld) {
+				clearLastInput();
+				activeExpression = display.value;
+			}
+
+			// Clean up event listener
+			document.removeEventListener(
+				isHeldCheck ? "keyup" : "mouseup",
+				onRelease
+			);
+		};
+
+		document.addEventListener(isHeldCheck ? "keyup" : "mouseup", onRelease);
+	} else {
+		appendChar(input);
+	}
+}
+
 /**
  * @param {string} input
  * @param {Boolean} isDelete
