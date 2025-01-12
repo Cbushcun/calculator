@@ -8,7 +8,7 @@
 
 let activeExpression = "";
 const displayRegex = /[\d%÷x\-+]/;
-const symbolRegex = /[%÷x\-+]/;
+const operatorRegex = /[%÷x\-.+]/;
 const tokenRegex = /\d*\.?\d+|[%÷x\-+]/g;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -84,22 +84,28 @@ function handleInput(input, isDelete = false, isHeldCheck = false) {
  * @description Appends a character to the active expression
  */
 function appendChar(char) {
-	console.log(`Char : ${char}`);
-	if (activeExpression) {
-		let lastChar = getLastNthToken(1);
-		console.log(`Last Char : ${lastChar}`);
-		symbolRegex.test(lastChar) && symbolRegex.test(char)
-			? (activeExpression = activeExpression.slice(0, -1) + char)
-			: (activeExpression += char);
+	let tokenizedExpression = null;
+	let lastChar = null;
+	let lastToken = null;
+
+	if (!activeExpression) {
+		activeExpression += char;
 	} else {
-		console.log(`First char: ${char}`);
+		tokenizedExpression = tokenizeExpression(activeExpression);
+		lastChar = activeExpression[activeExpression.length - 1];
+		lastToken = tokenizedExpression[tokenizedExpression.length - 1];
+		if (
+			(lastChar === "." && char === ".") ||
+			(lastToken.includes(".") && char === ".")
+		)
+			return;
+		if (
+			char === lastChar ||
+			(operatorRegex.test(lastChar) && operatorRegex.test(char))
+		)
+			deleteLastChar();
 		activeExpression += char;
 	}
-	console.log(
-		`Expression : ${activeExpression} tokenized : ${tokenizeExpression(
-			activeExpression
-		)}`
-	);
 	updateDisplay();
 }
 
@@ -135,7 +141,7 @@ function getLastNthToken(nthToken) {
 function getLastOperator() {
 	let tokenizedExpression = tokenizeExpression(activeExpression);
 	let lastOperator = tokenizedExpression.filter((token) =>
-		symbolRegex.test(token)
+		operatorRegex.test(token)
 	);
 	return lastOperator[lastOperator.length - 1];
 }
@@ -147,7 +153,7 @@ function getLastOperator() {
 function getLastNumber() {
 	let tokenizedExpression = tokenizeExpression(activeExpression);
 	let lastNumber = tokenizedExpression.filter(
-		(token) => !symbolRegex.test(token)
+		(token) => !operatorRegex.test(token)
 	);
 	return parseFloat(lastNumber[lastNumber.length - 1]);
 }
