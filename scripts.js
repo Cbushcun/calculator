@@ -15,78 +15,64 @@ document.addEventListener("DOMContentLoaded", function () {
 	const display = document.getElementById("display");
 	const buttons = document.querySelectorAll("button");
 
-	// Button listener, allows numerical input via button clicks
+	// Button listener for numerical input
 	buttons.forEach((button) => {
 		button.addEventListener("mousedown", (btn) => {
-			if (btn.target.id === "delete") {
-				let isHeld = false;
-				let timeoutId = null;
-
-				timeoutId = setTimeout(() => {
-					isHeld = true;
-					clearDisplay();
-					console.log("Button held");
-				}, 1000);
-
-				const onMouseUp = (event) => {
-					if (event.target.id === "delete") {
-						clearTimeout(timeoutId);
-
-						if (!isHeld) {
-							clearLastInput();
-							activeExpression = display.value;
-						}
-						document.removeEventListener("mouseup", onMouseUp);
-					}
-				};
-				document.addEventListener("mouseup", onMouseUp);
+			const { id, innerText } = btn.target;
+			if (id === "delete") {
+				handleInput(null, true);
 			} else {
-				appendChar(btn.target.innerText);
+				handleInput(innerText);
 			}
 		});
 	});
-	// Keyboard listener, allows numerical input via keyboard
-	window.addEventListener("keydown", function (keystroke) {
-		let timer = 0;
-		let interval = null;
+
+	// Keyboard listener for numerical input
+	window.addEventListener("keydown", (keystroke) => {
 		keystroke.preventDefault();
+
 		if (keystroke.key.match(displayRegex)) {
 			let charInput = keystroke.key;
-			switch (charInput) {
-				case "/":
-					charInput = "÷";
-					break;
-				case "*":
-					charInput = "x";
-					break;
-				default:
-					break;
-			}
-			appendChar(charInput);
+			if (charInput === "/") charInput = "÷";
+			if (charInput === "*") charInput = "x";
+
+			handleInput(charInput);
 		} else if (keystroke.key === "Backspace") {
-			let isHeld = false;
-			let timeoutId = null;
-
-			timeoutId = setTimeout(() => {
-				isHeld = true;
-				clearDisplay();
-			}, 1000);
-
-			const onKeyUp = (event) => {
-				if (event.key === "Backspace") {
-					clearTimeout(timeoutId);
-
-					if (!isHeld) {
-						clearLastInput();
-						activeExpression = display.value;
-					}
-					document.removeEventListener("keyup", onKeyUp);
-				}
-			};
-			document.addEventListener("keyup", onKeyUp);
+			handleInput(null, true, true);
 		}
 	});
 });
+
+// Helper function to handle input actions
+function handleInput(input, isDelete = false, isHeldCheck = false) {
+	if (isDelete) {
+		let isHeld = false;
+		let timeoutId = setTimeout(() => {
+			isHeld = true;
+			clearDisplay();
+			console.log("Delete held");
+		}, 1000);
+
+		const onRelease = () => {
+			clearTimeout(timeoutId);
+
+			if (!isHeld) {
+				clearLastInput();
+				activeExpression = display.value;
+			}
+
+			// Clean up event listener
+			document.removeEventListener(
+				isHeldCheck ? "keyup" : "mouseup",
+				onRelease
+			);
+		};
+
+		document.addEventListener(isHeldCheck ? "keyup" : "mouseup", onRelease);
+	} else {
+		appendChar(input);
+	}
+}
 
 /**
  * @param {string} char
