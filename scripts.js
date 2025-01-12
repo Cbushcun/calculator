@@ -42,7 +42,13 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 });
 
-// Helper function to handle input actions
+/**
+ * @param {string} input
+ * @param {Boolean} isDelete
+ * @param {Boolean} isHeldCheck
+ * @returns {void}
+ * @description Handles the input from the user
+ */
 function handleInput(input, isDelete = false, isHeldCheck = false) {
 	if (isDelete) {
 		let isHeld = false;
