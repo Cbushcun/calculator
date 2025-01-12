@@ -9,7 +9,7 @@
 let activeExpression = "";
 const displayRegex = /[\d%÷x\-+]/;
 const symbolRegex = /[%÷x\-+]/;
-const tokenRegex = /\d+|[%÷x\-+]/g;
+const tokenRegex = /\d*\.?\d+|[%÷x\-+]/g;
 
 document.addEventListener("DOMContentLoaded", function () {
 	const display = document.getElementById("display");
@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			let charInput = keystroke.key;
 			if (charInput === "/") charInput = "÷";
 			if (charInput === "*") charInput = "x";
-
 			handleInput(charInput);
 		} else if (keystroke.key === "Backspace") {
 			handleInput(null, true, true);
@@ -64,7 +63,6 @@ function handleInput(input, isDelete = false, isHeldCheck = false) {
 
 			if (!isHeld) {
 				clearLastInput();
-				activeExpression = display.value;
 			}
 
 			// Clean up event listener
@@ -86,14 +84,22 @@ function handleInput(input, isDelete = false, isHeldCheck = false) {
  * @description Appends a character to the active expression
  */
 function appendChar(char) {
+	console.log(`Char : ${char}`);
 	if (activeExpression) {
 		let lastChar = getLastNthToken(1);
+		console.log(`Last Char : ${lastChar}`);
 		symbolRegex.test(lastChar) && symbolRegex.test(char)
 			? (activeExpression = activeExpression.slice(0, -1) + char)
 			: (activeExpression += char);
 	} else {
+		console.log(`First char: ${char}`);
 		activeExpression += char;
 	}
+	console.log(
+		`Expression : ${activeExpression} tokenized : ${tokenizeExpression(
+			activeExpression
+		)}`
+	);
 	updateDisplay();
 }
 
@@ -169,8 +175,9 @@ function updateDisplay() {
  */
 function clearDisplay() {
 	activeExpression = "";
-	console.log("Display cleared");
+	console.log("Expression cleared");
 	updateDisplay();
+	console.log("Display cleared");
 }
 
 /**
@@ -179,4 +186,6 @@ function clearDisplay() {
 function clearLastInput() {
 	const display = document.getElementById("display");
 	display.value = display.value.slice(0, -1);
+	activeExpression = display.value;
+	console.log(`Last input cleared Expression : ${activeExpression}`);
 }
