@@ -142,11 +142,6 @@ function appendChar(char) {
 			deleteLastChar();
 		activeExpression += char;
 	}
-	console.log(
-		`Expression : ${activeExpression} tokenized : ${tokenizeExpression(
-			activeExpression
-		)}`
-	);
 	updateDisplay();
 }
 
